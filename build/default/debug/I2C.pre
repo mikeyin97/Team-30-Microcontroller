@@ -1,5 +1,5 @@
 
-# 1 "main.c"
+# 1 "I2C.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -3637,68 +3637,10 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 4 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\__size_t.h"
-typedef unsigned size_t;
-
-# 7 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\stdarg.h"
-typedef void * va_list[1];
-
-#pragma intrinsic(__va_start)
-extern void * __va_start(void);
-
-#pragma intrinsic(__va_arg)
-extern void * __va_arg(void *, ...);
-
-# 43 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\stdio.h"
-struct __prbuf
-{
-char * ptr;
-void (* func)(char);
-};
-
-# 29 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\errno.h"
-extern int errno;
-
-# 12 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\conio.h"
-extern void init_uart(void);
-
-extern char getch(void);
-extern char getche(void);
-extern void putch(char);
-extern void ungetch(char);
-
-extern __bit kbhit(void);
-
-# 23
-extern char * cgets(char *);
-extern void cputs(const char *);
-
-# 88 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\stdio.h"
-extern int cprintf(char *, ...);
-#pragma printf_check(cprintf)
-
-
-
-extern int _doprnt(struct __prbuf *, const register char *, register va_list);
-
-
-# 180
-#pragma printf_check(vprintf) const
-#pragma printf_check(vsprintf) const
-
-extern char * gets(char *);
-extern int puts(const char *);
-extern int scanf(const char *, ...) __attribute__((unsupported("scanf() is not supported by this compiler")));
-extern int sscanf(const char *, const char *, ...) __attribute__((unsupported("sscanf() is not supported by this compiler")));
-extern int vprintf(const char *, va_list) __attribute__((unsupported("vprintf() is not supported by this compiler")));
-extern int vsprintf(char *, const char *, va_list) __attribute__((unsupported("vsprintf() is not supported by this compiler")));
-extern int vscanf(const char *, va_list ap) __attribute__((unsupported("vscanf() is not supported by this compiler")));
-extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupported("vsscanf() is not supported by this compiler")));
-
-#pragma printf_check(printf) const
-#pragma printf_check(sprintf) const
-extern int sprintf(char *, const char *, ...);
-extern int printf(const char *, ...);
+# 1 "I2C.h"
+void I2C_Master_Init(const unsigned long c);
+void I2C_Master_Write(unsigned d);
+unsigned char I2C_Master_Read(unsigned char a);
 
 
 # 9 "configBits.h"
@@ -3756,6 +3698,9 @@ extern int printf(const char *, ...);
 
 #pragma config EBTRB = OFF
 
+# 4 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\__size_t.h"
+typedef unsigned size_t;
+
 # 14 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\string.h"
 extern void * memcpy(void *, const void *, size_t);
 extern void * memmove(void *, const void *, size_t);
@@ -3788,155 +3733,62 @@ extern char * strichr(const char *, int);
 extern char * strrchr(const char *, int);
 extern char * strrichr(const char *, int);
 
-# 11 "lcd.h"
-void lcdInst(char data);
-void lcdNibble(char data);
-void initLCD(void);
+# 13 "I2C.c"
+void I2C_Master_Init(const unsigned long c)
+{
 
-# 1 "I2C.h"
-void I2C_Master_Init(const unsigned long c);
-void I2C_Master_Write(unsigned d);
-unsigned char I2C_Master_Read(unsigned char a);
-
-# 17 "main.c"
-void set_time(void);
-void delay(int);
-void stand_by(unsigned char[]);
-void update_time(unsigned char[]);
-short int time_difference(unsigned char[], unsigned char[]);
-
-
-const char keys[] = "123A456B789C*0#D";
-const char happynewyear[7] = { 0x00,
-0x34,
-0x16,
-0x02,
-0x31,
-0x01,
-0x17};
-
-void main(void) {
-
-
-
-TRISA = 0xFF;
-TRISB = 0xFF;
-TRISC = 0x00;
-TRISD = 0x00;
-TRISE = 0x00;
-
-LATA = 0x00;
-LATB = 0x00;
-LATC = 0x00;
-LATD = 0x00;
-LATE = 0x00;
-
-ADCON0 = 0x00;
-ADCON1 = 0xFF;
-
-nRBPU = 0;
-
-
-
-initLCD();
-lcdInst(0b00000001);;
-unsigned char time[7];
-unsigned char start_time[7];
-unsigned char end_time[7];
-
-I2C_Master_Init(10000);
-
-# 68
-while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '#') {
-
-
-stand_by(time);
-}
-update_time(start_time);
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-printf("You have begun");
-lcdInst(0b11000000);;
-printf("the operation!");
-delay(3);
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-printf("Sorting...");
-lcdInst(0b11000000);;
-printf("'*' to STOP");
-
-while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '*') {
-
+SSPSTAT = 0b00000000;
+SSPCON1 = 0b00101000;
+SSPCON2 = 0b00000000;
+SSPADD = (8000000/(4*c))-1;
+TRISC3 = 1;
+TRISC4 = 1;
 }
 
-update_time(end_time);
-
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-short int d;
-d = time_difference(end_time, start_time);
-printf("%d", d);
-delay(5);
-lcdInst(0b00000001);;
-return;
-
-# 111
+void I2C_Master_Wait()
+{
+while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
 }
 
-void set_time(void){
-I2C_Master_Start();
-I2C_Master_Write(0b11010000);
-I2C_Master_Write(0x00);
-for(char i=0; i<7; i++){
-I2C_Master_Write(happynewyear[i]);
-}
-I2C_Master_Stop();
+void I2C_Master_Start()
+{
+I2C_Master_Wait();
+SEN = 1;
 }
 
-void stand_by(unsigned char time[]) {
-
-update_time(time);
-
-lcdInst(0b10000000);;
-printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);
-lcdInst(0b11000000);;
-printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);
-_delay((unsigned long)((10)*(8000000/4000.0)));
+void I2C_Master_RepeatedStart()
+{
+I2C_Master_Wait();
+RSEN = 1;
 }
 
-void update_time(unsigned char time[]) {
-
-
-I2C_Master_Start();
-I2C_Master_Write(0b11010000);
-I2C_Master_Write(0x00);
-I2C_Master_Stop();
-
-
-I2C_Master_Start();
-I2C_Master_Write(0b11010001);
-for(unsigned char i=0;i<0x06;i++){
-time[i] = I2C_Master_Read(1);
+void I2C_Master_Stop()
+{
+I2C_Master_Wait();
+PEN = 1;
 }
 
-time[6] = I2C_Master_Read(0);
-I2C_Master_Stop();
-
-
-}
-void delay(int seconds) {
-for (int i = 0; i <= seconds; i ++) {
-for(char i=0;i<100;i++){_delay((unsigned long)((10)*(8000000/4000.0)));};
-}
+void I2C_Master_Write(unsigned d)
+{
+I2C_Master_Wait();
+SSPBUF = d;
 }
 
-short int time_difference(unsigned char time1[], unsigned char time2[]) {
-short int sec;
-sec = 3600*((int)time1[2] - (int)time2[2]);
-sec += 60*((int)time1[1] - (int)time2[1]);
-sec += ((int)time1[0] - (int)time2[0]);
-return sec;
+unsigned char I2C_Master_Read(unsigned char a)
+{
+unsigned char temp;
+I2C_Master_Wait();
+RCEN = 1;
+I2C_Master_Wait();
+temp = SSPBUF;
+I2C_Master_Wait();
+ACKDT = (a)?0:1;
+ACKEN = 1;
+return temp;
+}
+
+void delay_10ms(unsigned char n) {
+while (n-- != 0) {
+_delay((unsigned long)((5)*(8000000/4000.0)));
+}
 }

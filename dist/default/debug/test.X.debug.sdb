@@ -21,8 +21,6 @@
 [v ___lldiv __lldiv `(ul  1 e 4 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
-"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwmod.c
-[v ___lwmod __lwmod `(ui  1 e 2 0 ]
 "10 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\sprcadd.c
 [v ___fladd __fladd `(d  1 e 3 0 ]
 "245
@@ -57,14 +55,14 @@
 [v _lcdNibble lcdNibble `(v  1 e 1 0 ]
 "33 C:\Users\joshk\MPLABXProjects\testing\test.X\main.c
 [v _main main `(v  1 e 1 0 ]
-"123
+"122
 [v _stand_by stand_by `(v  1 e 1 0 ]
-"134
+"133
 [v _update_time update_time `(v  1 e 1 0 ]
-"154
+"153
 [v _delay delay `(v  1 e 1 0 ]
-"160
-[v _time_difference time_difference `(s  1 e 2 0 ]
+"159
+[v _time_difference time_difference `(uc  1 e 1 0 ]
 "185 C:\Program Files (x86)\Microchip\xc8\v1.40\include\pic18f4620.h
 [v _PORTB PORTB `VEuc  1 e 1 @3969 ]
 [s S53 . 1 `uc 1 RB0 1 0 :1:0 
@@ -173,9 +171,7 @@
 [v _TRISC4 TRISC4 `VEb  1 e 0 @31908 ]
 "7772
 [v _nRBPU nRBPU `VEb  1 e 0 @32655 ]
-"354 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
-[v _dpowers dpowers `C[5]ui  1 s 10 dpowers ]
-"362
+"362 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
 [v _hexpowers hexpowers `C[4]ui  1 s 8 hexpowers ]
 "24 C:\Users\joshk\MPLABXProjects\testing\test.X\main.c
 [v _keys keys `C[17]uc  1 e 17 0 ]
@@ -185,39 +181,39 @@
 [v _main main `(v  1 e 1 0 ]
 {
 "60
-[v main@end_time end_time `[7]uc  1 a 7 55 ]
+[v main@end_time end_time `[7]uc  1 a 7 56 ]
 "59
-[v main@start_time start_time `[7]uc  1 a 7 48 ]
+[v main@start_time start_time `[7]uc  1 a 7 49 ]
 "58
-[v main@time time `[7]uc  1 a 7 41 ]
+[v main@time time `[7]uc  1 a 7 42 ]
 "97
-[v main@d d `s  1 a 2 62 ]
-"111
+[v main@d d `uc  1 a 1 63 ]
+"110
 } 0
-"160
-[v _time_difference time_difference `(s  1 e 2 0 ]
+"159
+[v _time_difference time_difference `(uc  1 e 1 0 ]
 {
-"161
-[v time_difference@sec sec `s  1 a 2 14 ]
 "160
-[v time_difference@time1 time1 `*.39uc  1 p 2 6 ]
-[v time_difference@time2 time2 `*.39uc  1 p 2 8 ]
-"166
+[v time_difference@sec sec `uc  1 a 1 5 ]
+"159
+[v time_difference@time1 time1 `*.39uc  1 p 2 0 ]
+[v time_difference@time2 time2 `*.39uc  1 p 2 2 ]
+"164
 } 0
-"123
+"122
 [v _stand_by stand_by `(v  1 e 1 0 ]
 {
 [v stand_by@time time `*.39uc  1 p 2 34 ]
-"132
+"131
 } 0
-"134
+"133
 [v _update_time update_time `(v  1 e 1 0 ]
 {
-"145
+"144
 [v update_time@i i `uc  1 a 1 5 ]
-"134
+"133
 [v update_time@time time `*.39uc  1 p 2 3 ]
-"153
+"152
 } 0
 "47 C:\Users\joshk\MPLABXProjects\testing\test.X\I2C.c
 [v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
@@ -259,18 +255,22 @@
 [v printf@idx idx `uc  1 a 1 24 ]
 "501
 [v printf@width width `i  1 a 2 31 ]
+"529
+[v printf@len len `ui  1 a 2 29 ]
 "528
-[v printf@val val `ui  1 a 2 28 ]
+[v printf@val val `ui  1 a 2 26 ]
+"530
+[v printf@cp cp `*.39Cuc  1 a 2 22 ]
 "466
-[v printf@ap ap `[1]*.39v  1 a 2 25 ]
+[v printf@ap ap `[1]*.39v  1 a 2 20 ]
 "499
 [v printf@c c `c  1 a 1 33 ]
-"508
-[v printf@flag flag `uc  1 a 1 30 ]
 "506
-[v printf@prec prec `c  1 a 1 27 ]
+[v printf@prec prec `c  1 a 1 28 ]
+"508
+[v printf@flag flag `uc  1 a 1 25 ]
 "464
-[v printf@f f `*.25Cuc  1 p 2 12 ]
+[v printf@f f `*.33Cuc  1 p 3 7 ]
 "1541
 } 0
 "31 C:\Users\joshk\MPLABXProjects\testing\test.X\lcd.c
@@ -299,16 +299,6 @@
 [v ___wmul@multiplier multiplier `ui  1 p 2 0 ]
 [v ___wmul@multiplicand multiplicand `ui  1 p 2 2 ]
 "53
-} 0
-"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwmod.c
-[v ___lwmod __lwmod `(ui  1 e 2 0 ]
-{
-"11
-[v ___lwmod@counter counter `uc  1 a 1 11 ]
-"8
-[v ___lwmod@dividend dividend `ui  1 p 2 7 ]
-[v ___lwmod@divisor divisor `ui  1 p 2 9 ]
-"26
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
@@ -347,16 +337,16 @@
 [v lcdNibble@data data `uc  1 a 1 1 ]
 "57
 } 0
-"154 C:\Users\joshk\MPLABXProjects\testing\test.X\main.c
+"153 C:\Users\joshk\MPLABXProjects\testing\test.X\main.c
 [v _delay delay `(v  1 e 1 0 ]
 {
-"156
-[v delay@i_197 i `uc  1 a 1 5 ]
 "155
-[v delay@i i `i  1 a 2 3 ]
+[v delay@i_197 i `uc  1 a 1 5 ]
 "154
+[v delay@i i `i  1 a 2 3 ]
+"153
 [v delay@seconds seconds `i  1 p 2 0 ]
-"158
+"157
 } 0
 "13 C:\Users\joshk\MPLABXProjects\testing\test.X\I2C.c
 [v _I2C_Master_Init I2C_Master_Init `(v  1 e 1 0 ]

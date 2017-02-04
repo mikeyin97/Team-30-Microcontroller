@@ -3803,7 +3803,7 @@ void set_time(void);
 void delay(int);
 void stand_by(unsigned char[]);
 void update_time(unsigned char[]);
-short int time_difference(unsigned char[], unsigned char[]);
+char time_difference(unsigned char[], unsigned char[]);
 
 
 const char keys[] = "123A456B789C*0#D";
@@ -3876,14 +3876,13 @@ update_time(end_time);
 lcdInst(0b00000001);;
 initLCD();
 lcdInst(0b10000000);;
-short int d;
-d = time_difference(end_time, start_time);
-printf("%d", d);
+char d;
+d = time_difference(start_time, end_time);
+printf(d);
 delay(5);
-lcdInst(0b00000001);;
 return;
 
-# 111
+# 110
 }
 
 void set_time(void){
@@ -3933,10 +3932,9 @@ for(char i=0;i<100;i++){_delay((unsigned long)((10)*(8000000/4000.0)));};
 }
 }
 
-short int time_difference(unsigned char time1[], unsigned char time2[]) {
-short int sec;
-sec = 3600*((int)time1[2] - (int)time2[2]);
-sec += 60*((int)time1[1] - (int)time2[1]);
-sec += ((int)time1[0] - (int)time2[0]);
+char time_difference(unsigned char time1[], unsigned char time2[]) {
+char sec;
+sec = 60*(time1[1] - time2[1]);
+sec += (time1[0] - time2[0]);
 return sec;
 }

@@ -1,5 +1,5 @@
 
-# 1 "main.c"
+# 1 "lcd.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -3637,8 +3637,96 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
+
+# 9 "configBits.h"
+#pragma config OSC = HS
+#pragma config FCMEN = OFF
+#pragma config IESO = OFF
+
+
+#pragma config PWRT = OFF
+#pragma config BOREN = SBORDIS
+#pragma config BORV = 3
+
+
+#pragma config WDT = OFF
+#pragma config WDTPS = 32768
+
+
+#pragma config CCP2MX = PORTC
+#pragma config PBADEN = ON
+#pragma config LPT1OSC = OFF
+#pragma config MCLRE = ON
+
+
+#pragma config STVREN = ON
+#pragma config LVP = OFF
+#pragma config XINST = OFF
+
+
+#pragma config CP0 = OFF
+#pragma config CP1 = OFF
+#pragma config CP2 = OFF
+#pragma config CP3 = OFF
+
+
+#pragma config CPB = OFF
+#pragma config CPD = OFF
+
+
+#pragma config WRT0 = OFF
+#pragma config WRT1 = OFF
+#pragma config WRT2 = OFF
+#pragma config WRT3 = OFF
+
+
+#pragma config WRTC = OFF
+#pragma config WRTB = OFF
+#pragma config WRTD = OFF
+
+
+#pragma config EBTR0 = OFF
+#pragma config EBTR1 = OFF
+#pragma config EBTR2 = OFF
+#pragma config EBTR3 = OFF
+
+
+#pragma config EBTRB = OFF
+
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\__size_t.h"
 typedef unsigned size_t;
+
+# 14 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\string.h"
+extern void * memcpy(void *, const void *, size_t);
+extern void * memmove(void *, const void *, size_t);
+extern void * memset(void *, int, size_t);
+
+# 34
+extern char * strcat(char *, const char *);
+extern char * strcpy(char *, const char *);
+extern char * strncat(char *, const char *, size_t);
+extern char * strncpy(char *, const char *, size_t);
+extern char * strdup(const char *);
+extern char * strtok(char *, const char *);
+
+
+extern int memcmp(const void *, const void *, size_t);
+extern int strcmp(const char *, const char *);
+extern int stricmp(const char *, const char *);
+extern int strncmp(const char *, const char *, size_t);
+extern int strnicmp(const char *, const char *, size_t);
+extern void * memchr(const void *, int, size_t);
+extern size_t strcspn(const char *, const char *);
+extern char * strpbrk(const char *, const char *);
+extern size_t strspn(const char *, const char *);
+extern char * strstr(const char *, const char *);
+extern char * stristr(const char *, const char *);
+extern char * strerror(int);
+extern size_t strlen(const char *);
+extern char * strchr(const char *, int);
+extern char * strichr(const char *, int);
+extern char * strrchr(const char *, int);
+extern char * strrichr(const char *, int);
 
 # 7 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\stdarg.h"
 typedef void * va_list[1];
@@ -3700,243 +3788,54 @@ extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupport
 extern int sprintf(char *, const char *, ...);
 extern int printf(const char *, ...);
 
-
-# 9 "configBits.h"
-#pragma config OSC = HS
-#pragma config FCMEN = OFF
-#pragma config IESO = OFF
-
-
-#pragma config PWRT = OFF
-#pragma config BOREN = SBORDIS
-#pragma config BORV = 3
-
-
-#pragma config WDT = OFF
-#pragma config WDTPS = 32768
-
-
-#pragma config CCP2MX = PORTC
-#pragma config PBADEN = ON
-#pragma config LPT1OSC = OFF
-#pragma config MCLRE = ON
-
-
-#pragma config STVREN = ON
-#pragma config LVP = OFF
-#pragma config XINST = OFF
-
-
-#pragma config CP0 = OFF
-#pragma config CP1 = OFF
-#pragma config CP2 = OFF
-#pragma config CP3 = OFF
-
-
-#pragma config CPB = OFF
-#pragma config CPD = OFF
-
-
-#pragma config WRT0 = OFF
-#pragma config WRT1 = OFF
-#pragma config WRT2 = OFF
-#pragma config WRT3 = OFF
-
-
-#pragma config WRTC = OFF
-#pragma config WRTB = OFF
-#pragma config WRTD = OFF
-
-
-#pragma config EBTR0 = OFF
-#pragma config EBTR1 = OFF
-#pragma config EBTR2 = OFF
-#pragma config EBTR3 = OFF
-
-
-#pragma config EBTRB = OFF
-
-# 14 "C:\Program Files (x86)\Microchip\xc8\v1.40\include\string.h"
-extern void * memcpy(void *, const void *, size_t);
-extern void * memmove(void *, const void *, size_t);
-extern void * memset(void *, int, size_t);
-
-# 34
-extern char * strcat(char *, const char *);
-extern char * strcpy(char *, const char *);
-extern char * strncat(char *, const char *, size_t);
-extern char * strncpy(char *, const char *, size_t);
-extern char * strdup(const char *);
-extern char * strtok(char *, const char *);
-
-
-extern int memcmp(const void *, const void *, size_t);
-extern int strcmp(const char *, const char *);
-extern int stricmp(const char *, const char *);
-extern int strncmp(const char *, const char *, size_t);
-extern int strnicmp(const char *, const char *, size_t);
-extern void * memchr(const void *, int, size_t);
-extern size_t strcspn(const char *, const char *);
-extern char * strpbrk(const char *, const char *);
-extern size_t strspn(const char *, const char *);
-extern char * strstr(const char *, const char *);
-extern char * stristr(const char *, const char *);
-extern char * strerror(int);
-extern size_t strlen(const char *);
-extern char * strchr(const char *, int);
-extern char * strichr(const char *, int);
-extern char * strrchr(const char *, int);
-extern char * strrichr(const char *, int);
-
 # 11 "lcd.h"
 void lcdInst(char data);
 void lcdNibble(char data);
 void initLCD(void);
 
-# 1 "I2C.h"
-void I2C_Master_Init(const unsigned long c);
-void I2C_Master_Write(unsigned d);
-unsigned char I2C_Master_Read(unsigned char a);
-
-# 17 "main.c"
-void set_time(void);
-void delay(int);
-void stand_by(unsigned char[]);
-void update_time(unsigned char[]);
-short int time_difference(unsigned char[], unsigned char[]);
-
-
-const char keys[] = "123A456B789C*0#D";
-const char happynewyear[7] = { 0x00,
-0x34,
-0x16,
-0x02,
-0x31,
-0x01,
-0x17};
-
-void main(void) {
-
-
-
-TRISA = 0xFF;
-TRISB = 0xFF;
-TRISC = 0x00;
-TRISD = 0x00;
-TRISE = 0x00;
-
-LATA = 0x00;
-LATB = 0x00;
-LATC = 0x00;
-LATD = 0x00;
-LATE = 0x00;
-
-ADCON0 = 0x00;
-ADCON1 = 0xFF;
-
-nRBPU = 0;
-
-
-
-initLCD();
-lcdInst(0b00000001);;
-unsigned char time[7];
-unsigned char start_time[7];
-unsigned char end_time[7];
-
-I2C_Master_Init(10000);
-
-# 68
-while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '#') {
-
-
-stand_by(time);
-}
-update_time(start_time);
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-printf("You have begun");
-lcdInst(0b11000000);;
-printf("the operation!");
-delay(3);
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-printf("Sorting...");
-lcdInst(0b11000000);;
-printf("'*' to STOP");
-
-while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '*') {
-
+# 14 "lcd.c"
+void initLCD(void) {
+_delay((unsigned long)((15)*(8000000/4000.0)));
+lcdInst(0b00110011);
+lcdInst(0b00110011);
+lcdInst(0b00110010);
+lcdInst(0b00101000);
+lcdInst(0b00001111);
+lcdInst(0b00000110);
+lcdInst(0b00000001);
+_delay((unsigned long)((15)*(8000000/4000.0)));
 }
 
-update_time(end_time);
-
-lcdInst(0b00000001);;
-initLCD();
-lcdInst(0b10000000);;
-short int d;
-d = time_difference(end_time, start_time);
-printf("%d", d);
-delay(5);
-lcdInst(0b00000001);;
-return;
-
-# 111
+void lcdInst(char data) {
+LATDbits.LATD2 = 0;
+lcdNibble(data);
 }
 
-void set_time(void){
-I2C_Master_Start();
-I2C_Master_Write(0b11010000);
-I2C_Master_Write(0x00);
-for(char i=0; i<7; i++){
-I2C_Master_Write(happynewyear[i]);
-}
-I2C_Master_Stop();
+void putch(char data){
+LATDbits.LATD2 = 1;
+lcdNibble(data);
 }
 
-void stand_by(unsigned char time[]) {
+void lcdNibble(char data){
 
-update_time(time);
+char temp = data & 0xF0;
+LATD = LATD & 0x0F;
+LATD = temp | LATD;
 
-lcdInst(0b10000000);;
-printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);
-lcdInst(0b11000000);;
-printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);
-_delay((unsigned long)((10)*(8000000/4000.0)));
+LATDbits.LATD3 = 0;
+_delay((unsigned long)((30)*(8000000/4000000.0)));
+LATDbits.LATD3 = 1;
+_delay((unsigned long)((30)*(8000000/4000000.0)));
+
+data = data << 4;
+
+temp = data & 0xF0;
+LATD = LATD & 0x0F;
+LATD = temp | LATD;
+
+LATDbits.LATD3 = 0;
+_delay((unsigned long)((30)*(8000000/4000000.0)));
+LATDbits.LATD3 = 1;
+_delay((unsigned long)((30)*(8000000/4000000.0)));
 }
 
-void update_time(unsigned char time[]) {
-
-
-I2C_Master_Start();
-I2C_Master_Write(0b11010000);
-I2C_Master_Write(0x00);
-I2C_Master_Stop();
-
-
-I2C_Master_Start();
-I2C_Master_Write(0b11010001);
-for(unsigned char i=0;i<0x06;i++){
-time[i] = I2C_Master_Read(1);
-}
-
-time[6] = I2C_Master_Read(0);
-I2C_Master_Stop();
-
-
-}
-void delay(int seconds) {
-for (int i = 0; i <= seconds; i ++) {
-for(char i=0;i<100;i++){_delay((unsigned long)((10)*(8000000/4000.0)));};
-}
-}
-
-short int time_difference(unsigned char time1[], unsigned char time2[]) {
-short int sec;
-sec = 3600*((int)time1[2] - (int)time2[2]);
-sec += 60*((int)time1[1] - (int)time2[1]);
-sec += ((int)time1[0] - (int)time2[0]);
-return sec;
-}

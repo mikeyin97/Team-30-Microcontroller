@@ -60,12 +60,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 "18 main.c
 [v _delay `(v ~T0 @X0 0 ef1`i ]
 "21
-[v _time_difference `(s ~T0 @X0 0 ef2`*uc`*uc ]
-"114
+[v _time_difference `(uc ~T0 @X0 0 ef2`*uc`*uc ]
+"113
 [v _I2C_Master_Start `(i ~T0 @X0 0 ef ]
 "2 I2C.h
 [v _I2C_Master_Write `(v ~T0 @X0 0 ef1`ui ]
-"120 main.c
+"119 main.c
 [v _I2C_Master_Stop `(i ~T0 @X0 0 ef ]
 [v F2878 `(v ~T0 @X0 1 tf1`ul ]
 "159 C:\Program Files (x86)\Microchip\xc8\v1.40\include\pic18.h
@@ -2886,7 +2886,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 18: void delay(int);
 [; ;main.c: 19: void stand_by(unsigned char[]);
 [; ;main.c: 20: void update_time(unsigned char[]);
-[; ;main.c: 21: short int time_difference(unsigned char[], unsigned char[]);
+[; ;main.c: 21: char time_difference(unsigned char[], unsigned char[]);
 "24 main.c
 [v _keys `Cuc ~T0 @X0 -> 0 `x e ]
 [i _keys
@@ -3082,44 +3082,41 @@ Version 3.2 HI-TECH Software Intermediate Code
 "96
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
 "97
-[v _d `s ~T0 @X0 1 a ]
-[; ;main.c: 97: short int d;
-[; ;main.c: 98: d = time_difference(end_time, start_time);
+[v _d `uc ~T0 @X0 1 a ]
+[; ;main.c: 97: char d;
+[; ;main.c: 98: d = time_difference(start_time, end_time);
 "98
-[e = _d ( _time_difference (2 , &U _end_time &U _start_time ]
-[; ;main.c: 99: printf("%d", d);
+[e = _d ( _time_difference (2 , &U _start_time &U _end_time ]
+[; ;main.c: 99: printf(d);
 "99
-[e ( _printf , (. :s 5C -> _d `i ]
+[e ( _printf -> _d `*Cuc ]
 [; ;main.c: 100: delay(5);
 "100
 [e ( _delay (1 -> 5 `i ]
-[; ;main.c: 101: lcdInst(0b00000001);;
+[; ;main.c: 101: return;
 "101
-[e ( _lcdInst (1 -> -> 1 `i `uc ]
-[; ;main.c: 102: return;
-"102
 [e $UE 266  ]
-[; ;main.c: 111: }
-"111
+[; ;main.c: 110: }
+"110
 [e :UE 266 ]
 }
-"113
+"112
 [v _set_time `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 113: void set_time(void){
+[; ;main.c: 112: void set_time(void){
 [e :U _set_time ]
 [f ]
-[; ;main.c: 114: I2C_Master_Start();
-"114
+[; ;main.c: 113: I2C_Master_Start();
+"113
 [e ( _I2C_Master_Start ..  ]
-[; ;main.c: 115: I2C_Master_Write(0b11010000);
-"115
+[; ;main.c: 114: I2C_Master_Write(0b11010000);
+"114
 [e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
-[; ;main.c: 116: I2C_Master_Write(0x00);
-"116
+[; ;main.c: 115: I2C_Master_Write(0x00);
+"115
 [e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
-[; ;main.c: 117: for(char i=0; i<7; i++){
-"117
+[; ;main.c: 116: for(char i=0; i<7; i++){
+"116
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -3127,81 +3124,81 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 275  ]
 [e :U 274 ]
 {
-[; ;main.c: 118: I2C_Master_Write(happynewyear[i]);
-"118
-[e ( _I2C_Master_Write (1 -> *U + &U _happynewyear * -> _i `ux -> -> # *U &U _happynewyear `ui `ux `ui ]
-"119
-}
+[; ;main.c: 117: I2C_Master_Write(happynewyear[i]);
 "117
+[e ( _I2C_Master_Write (1 -> *U + &U _happynewyear * -> _i `ux -> -> # *U &U _happynewyear `ui `ux `ui ]
+"118
+}
+"116
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 7 `i 274  ]
 [e :U 275 ]
-"119
+"118
 }
-[; ;main.c: 119: }
-[; ;main.c: 120: I2C_Master_Stop();
-"120
+[; ;main.c: 118: }
+[; ;main.c: 119: I2C_Master_Stop();
+"119
 [e ( _I2C_Master_Stop ..  ]
-[; ;main.c: 121: }
-"121
+[; ;main.c: 120: }
+"120
 [e :UE 273 ]
 }
-"123
+"122
 [v _stand_by `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;main.c: 123: void stand_by(unsigned char time[]) {
+[; ;main.c: 122: void stand_by(unsigned char time[]) {
 [e :U _stand_by ]
 [v _time `*uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 125: update_time(time);
-"125
+[; ;main.c: 124: update_time(time);
+"124
 [e ( _update_time (1 _time ]
-[; ;main.c: 127: lcdInst(0b10000000);;
-"127
+[; ;main.c: 126: lcdInst(0b10000000);;
+"126
 [e ( _lcdInst (1 -> -> 128 `i `uc ]
-[; ;main.c: 128: printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);
+[; ;main.c: 127: printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);
+"127
+[e ( _printf , , , (. :s 5C -> *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 5 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 4 `i `x -> -> # *U _time `i `x `i ]
+[; ;main.c: 128: lcdInst(0b11000000);;
 "128
-[e ( _printf , , , (. :s 6C -> *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 5 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 4 `i `x -> -> # *U _time `i `x `i ]
-[; ;main.c: 129: lcdInst(0b11000000);;
-"129
 [e ( _lcdInst (1 -> -> 192 `i `uc ]
-[; ;main.c: 130: printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);
+[; ;main.c: 129: printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);
+"129
+[e ( _printf , , , (. :s 6C -> *U + _time * -> -> 2 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 1 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 0 `i `x -> -> # *U _time `i `x `i ]
+[; ;main.c: 130: _delay((unsigned long)((10)*(8000000/4000.0)));
 "130
-[e ( _printf , , , (. :s 7C -> *U + _time * -> -> 2 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 1 `i `x -> -> # *U _time `i `x `i -> *U + _time * -> -> 0 `i `x -> -> # *U _time `i `x `i ]
-[; ;main.c: 131: _delay((unsigned long)((10)*(8000000/4000.0)));
-"131
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-[; ;main.c: 132: }
-"132
+[; ;main.c: 131: }
+"131
 [e :UE 277 ]
 }
-"134
+"133
 [v _update_time `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;main.c: 134: void update_time(unsigned char time[]) {
+[; ;main.c: 133: void update_time(unsigned char time[]) {
 [e :U _update_time ]
 [v _time `*uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 137: I2C_Master_Start();
+[; ;main.c: 136: I2C_Master_Start();
+"136
+[e ( _I2C_Master_Start ..  ]
+[; ;main.c: 137: I2C_Master_Write(0b11010000);
 "137
-[e ( _I2C_Master_Start ..  ]
-[; ;main.c: 138: I2C_Master_Write(0b11010000);
-"138
 [e ( _I2C_Master_Write (1 -> -> 208 `i `ui ]
-[; ;main.c: 139: I2C_Master_Write(0x00);
-"139
+[; ;main.c: 138: I2C_Master_Write(0x00);
+"138
 [e ( _I2C_Master_Write (1 -> -> 0 `i `ui ]
-[; ;main.c: 140: I2C_Master_Stop();
-"140
+[; ;main.c: 139: I2C_Master_Stop();
+"139
 [e ( _I2C_Master_Stop ..  ]
-[; ;main.c: 143: I2C_Master_Start();
-"143
+[; ;main.c: 142: I2C_Master_Start();
+"142
 [e ( _I2C_Master_Start ..  ]
-[; ;main.c: 144: I2C_Master_Write(0b11010001);
-"144
+[; ;main.c: 143: I2C_Master_Write(0b11010001);
+"143
 [e ( _I2C_Master_Write (1 -> -> 209 `i `ui ]
-[; ;main.c: 145: for(unsigned char i=0;i<0x06;i++){
-"145
+[; ;main.c: 144: for(unsigned char i=0;i<0x06;i++){
+"144
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -3209,45 +3206,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 280  ]
 [e :U 279 ]
 {
-[; ;main.c: 146: time[i] = I2C_Master_Read(1);
-"146
-[e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
-"147
-}
+[; ;main.c: 145: time[i] = I2C_Master_Read(1);
 "145
+[e = *U + _time * -> _i `ux -> -> # *U _time `ui `ux ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
+"146
+}
+"144
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 6 `i 279  ]
 [e :U 280 ]
-"147
+"146
 }
-[; ;main.c: 147: }
-[; ;main.c: 149: time[6] = I2C_Master_Read(0);
-"149
+[; ;main.c: 146: }
+[; ;main.c: 148: time[6] = I2C_Master_Read(0);
+"148
 [e = *U + _time * -> -> 6 `i `x -> -> # *U _time `i `x ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
-[; ;main.c: 150: I2C_Master_Stop();
-"150
+[; ;main.c: 149: I2C_Master_Stop();
+"149
 [e ( _I2C_Master_Stop ..  ]
-[; ;main.c: 153: }
-"153
+[; ;main.c: 152: }
+"152
 [e :UE 278 ]
 }
-"154
+"153
 [v _delay `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;main.c: 154: void delay(int seconds) {
+[; ;main.c: 153: void delay(int seconds) {
 [e :U _delay ]
 [v _seconds `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 155: for (int i = 0; i <= seconds; i ++) {
-"155
+[; ;main.c: 154: for (int i = 0; i <= seconds; i ++) {
+"154
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
 [e $U 286  ]
 [e :U 283 ]
 {
-[; ;main.c: 156: for(char i=0;i<100;i++){_delay((unsigned long)((10)*(8000000/4000.0)));};
-"156
+[; ;main.c: 155: for(char i=0;i<100;i++){_delay((unsigned long)((10)*(8000000/4000.0)));};
+"155
 {
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
@@ -3261,53 +3258,49 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $ < -> _i `i -> 100 `i 287  ]
 [e :U 288 ]
 }
-"157
+"156
 }
-"155
+"154
 [e ++ _i -> 1 `i ]
 [e :U 286 ]
 [e $ <= _i _seconds 283  ]
 [e :U 284 ]
-"157
+"156
 }
+[; ;main.c: 156: }
 [; ;main.c: 157: }
-[; ;main.c: 158: }
-"158
+"157
 [e :UE 282 ]
 }
-"160
-[v _time_difference `(s ~T0 @X0 1 ef2`*uc`*uc ]
+"159
+[v _time_difference `(uc ~T0 @X0 1 ef2`*uc`*uc ]
 {
-[; ;main.c: 160: short int time_difference(unsigned char time1[], unsigned char time2[]) {
+[; ;main.c: 159: char time_difference(unsigned char time1[], unsigned char time2[]) {
 [e :U _time_difference ]
 [v _time1 `*uc ~T0 @X0 1 r1 ]
 [v _time2 `*uc ~T0 @X0 1 r2 ]
 [f ]
+"160
+[v _sec `uc ~T0 @X0 1 a ]
+[; ;main.c: 160: char sec;
+[; ;main.c: 161: sec = 60*(time1[1] - time2[1]);
 "161
-[v _sec `s ~T0 @X0 1 a ]
-[; ;main.c: 161: short int sec;
-[; ;main.c: 162: sec = 3600*((int)time1[2] - (int)time2[2]);
+[e = _sec -> * -> 60 `i - -> *U + _time1 * -> -> 1 `i `x -> -> # *U _time1 `i `x `i -> *U + _time2 * -> -> 1 `i `x -> -> # *U _time2 `i `x `i `uc ]
+[; ;main.c: 162: sec += (time1[0] - time2[0]);
 "162
-[e = _sec -> * -> 3600 `i - -> *U + _time1 * -> -> 2 `i `x -> -> # *U _time1 `i `x `i -> *U + _time2 * -> -> 2 `i `x -> -> # *U _time2 `i `x `i `s ]
-[; ;main.c: 163: sec += 60*((int)time1[1] - (int)time2[1]);
+[e =+ _sec -> - -> *U + _time1 * -> -> 0 `i `x -> -> # *U _time1 `i `x `i -> *U + _time2 * -> -> 0 `i `x -> -> # *U _time2 `i `x `i `uc ]
+[; ;main.c: 163: return sec;
 "163
-[e =+ _sec -> * -> 60 `i - -> *U + _time1 * -> -> 1 `i `x -> -> # *U _time1 `i `x `i -> *U + _time2 * -> -> 1 `i `x -> -> # *U _time2 `i `x `i `s ]
-[; ;main.c: 164: sec += ((int)time1[0] - (int)time2[0]);
-"164
-[e =+ _sec -> - -> *U + _time1 * -> -> 0 `i `x -> -> # *U _time1 `i `x `i -> *U + _time2 * -> -> 0 `i `x -> -> # *U _time2 `i `x `i `s ]
-[; ;main.c: 165: return sec;
-"165
 [e ) _sec ]
 [e $UE 290  ]
-[; ;main.c: 166: }
-"166
+[; ;main.c: 164: }
+"164
 [e :UE 290 ]
 }
-[p f _printf 12615812 ]
-[a 6C 37 48 50 120 47 37 48 50 120 47 37 48 50 120 32 39 35 39 32 116 111 0 ]
+[p f _printf 13664772 ]
+[a 5C 37 48 50 120 47 37 48 50 120 47 37 48 50 120 32 39 35 39 32 116 111 0 ]
 [a 1C 89 111 117 32 104 97 118 101 32 98 101 103 117 110 0 ]
-[a 5C 37 100 0 ]
 [a 4C 39 42 39 32 116 111 32 83 84 79 80 0 ]
 [a 3C 83 111 114 116 105 110 103 46 46 46 0 ]
-[a 7C 37 48 50 120 58 37 48 50 120 58 37 48 50 120 32 83 116 97 114 116 33 0 ]
+[a 6C 37 48 50 120 58 37 48 50 120 58 37 48 50 120 32 83 116 97 114 116 33 0 ]
 [a 2C 116 104 101 32 111 112 101 114 97 116 105 111 110 33 0 ]

@@ -17,6 +17,8 @@
 void set_time(void);
 void delay(int);
 void stand_by(unsigned char[]);
+void update_time(unsigned char[]);
+short int time_difference(unsigned char[], unsigned char[]);
 
 
 const char keys[] = "123A456B789C*0#D";
@@ -54,6 +56,8 @@ void main(void) {
     initLCD();
     __lcd_clear();
     unsigned char time[7];
+    unsigned char start_time[7];
+    unsigned char end_time[7];
 
     I2C_Master_Init(10000); //Initialize I2C Master with 100KHz clock
 //    di(); // Disable all interrupts
@@ -66,6 +70,7 @@ void main(void) {
             // the PIC will wait and do nothing until a key press is signaled
         stand_by(time);  
     }
+    update_time(start_time);
     __lcd_clear();
     initLCD();
     __lcd_home();
@@ -80,19 +85,29 @@ void main(void) {
     __lcd_newline();
     printf("'*' to STOP");
     
-//    while (1) {
-//        while(PORTBbits.RB1 == 1){
-//            // Wait until the key has been released
-//        }
-//        Nop();  //Apply breakpoint here because of compiler optimizations
-//        Nop();
-//    }
     while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '*') {
 //        operating phase
-        
     }
-    __lcd_clear()
+    
+    update_time(end_time);
+   
+    __lcd_clear();
+    initLCD();
+    __lcd_home();
+    short int d;
+    d = time_difference(end_time, start_time);
+    printf("%d", d);
+    delay(5);
+    __lcd_clear();
     return;
+    
+//    char d;
+//    d = time_difference(start_time, end_time);
+    
+//    __lcd_clear();
+//    initLCD();
+//    __lcd_home();
+//    printf(d);
 }
 
 void set_time(void){
@@ -103,12 +118,21 @@ void set_time(void){
         I2C_Master_Write(happynewyear[i]);
     }    
     I2C_Master_Stop(); //Stop condition
-    
-    
 }
 
 void stand_by(unsigned char time[]) {
+    
+    update_time(time);
 
+    __lcd_home();
+    printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);    //Print date in YY/MM/DD
+    __lcd_newline();
+    printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);    //HH:MM:SS
+    __delay_ms(10);
+}
+
+void update_time(unsigned char time[]) {
+    
     //Reset RTC memory pointer 
     I2C_Master_Start(); //Start condition
     I2C_Master_Write(0b11010000); //7 bit RTC address + Write
@@ -121,16 +145,22 @@ void stand_by(unsigned char time[]) {
     for(unsigned char i=0;i<0x06;i++){
         time[i] = I2C_Master_Read(1);
     }
+    
     time[6] = I2C_Master_Read(0);       //Final Read without ack
     I2C_Master_Stop();
-    __lcd_home();
-    printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);    //Print date in YY/MM/DD
-    __lcd_newline();
-    printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);    //HH:MM:SS
-    __delay_ms(10);
+    
+    
 }
 void delay(int seconds) {
     for (int i = 0; i <= seconds; i ++) {
         __delay_1s();
     }
+}
+
+short int time_difference(unsigned char time1[], unsigned char time2[]) {
+    short int sec;
+    sec = 3600*((int)time1[2] - (int)time2[2]);
+    sec += 60*((int)time1[1] - (int)time2[1]);
+    sec += ((int)time1[0] - (int)time2[0]);
+    return sec;
 }
