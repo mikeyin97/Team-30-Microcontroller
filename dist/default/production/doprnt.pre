@@ -359,11 +359,32 @@ flag |= 0x80;
 
 break;
 
+# 750
+dostring:
+
+# 757
+if(width > len)
+width -= len;
+else
+width = 0;
+
+# 764
+while(width--)
+(putch(' ') );
+
+while(len--)
+(putch(*cp++) );
+
+# 774
+continue;
+
 # 802
 default:
 
-# 813
-continue;
+
+cp = (char *)&c;
+len = 1;
+goto dostring;
 
 # 822
 }

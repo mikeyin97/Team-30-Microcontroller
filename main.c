@@ -8,17 +8,22 @@
 
 #include <xc.h>
 #include <stdio.h>
+#include <math.h>
 #include "configBits.h"
 #include "constants.h"
 #include "lcd.h"
 #include "I2C.h"
 #include "macros.h"
 
+
 void set_time(void);
 void delay(int);
 void stand_by(unsigned char[]);
+void end_phase(int);
 void update_time(unsigned char[]);
-short int time_difference(unsigned char[], unsigned char[]);
+void message(char[], char[]);
+int time_difference(unsigned char[], unsigned char[]);
+int dec_to_hex(int);
 
 
 const char keys[] = "123A456B789C*0#D";
@@ -64,7 +69,9 @@ void main(void) {
     
     //only to configure the time
 //    set_time(); 
-    
+    __lcd_clear();
+    initLCD();
+    __lcd_home();
     while (PORTBbits.RB1 == 0 || keys[(PORTB & 0xF0)>>4] != '#') {
         // RB1 is the interrupt pin, so if there is no key pressed, RB1 will be 0
             // the PIC will wait and do nothing until a key press is signaled
@@ -90,24 +97,12 @@ void main(void) {
     }
     
     update_time(end_time);
-   
-    __lcd_clear();
-    initLCD();
-    __lcd_home();
-    short int d;
+    
+    int d;
     d = time_difference(end_time, start_time);
-    printf("%d", d);
-    delay(5);
-    __lcd_clear();
+    end_phase(d);
     return;
     
-//    char d;
-//    d = time_difference(start_time, end_time);
-    
-//    __lcd_clear();
-//    initLCD();
-//    __lcd_home();
-//    printf(d);
 }
 
 void set_time(void){
@@ -123,12 +118,96 @@ void set_time(void){
 void stand_by(unsigned char time[]) {
     
     update_time(time);
-
+    
     __lcd_home();
     printf("%02x/%02x/%02x '#' to", time[6],time[5],time[4]);    //Print date in YY/MM/DD
     __lcd_newline();
     printf("%02x:%02x:%02x Start!", time[2],time[1],time[0]);    //HH:MM:SS
     __delay_ms(10);
+}
+
+void end_phase(int time) {
+    int hours, min, sec;
+    char pg;
+    pg = 0;
+    __lcd_clear();
+    
+    while (1) {
+        if (pg == 0) {
+            initLCD();
+            while (PORTBbits.RB1 == 0 && keys[(PORTB & 0xF0)>>4] != 'A') {
+                
+                message("Next Page: A", "Count Sorted:10");
+                
+            }
+            
+            while(PORTBbits.RB1 == 1){
+            // Wait until the key has been released
+            }
+            __lcd_clear();
+            pg = 1;
+        }
+        
+        else if (pg == 1) {
+            initLCD();
+            while (PORTBbits.RB1 == 0 && keys[(PORTB & 0xF0)>>4] != 'A') {
+                
+                message("Cat1:3   Cat2:4", "Cat3:1   Cat4:0");
+                
+            }
+            
+            while(PORTBbits.RB1 == 1){
+            // Wait until the key has been released
+            }
+            __lcd_clear();
+            pg = 2;
+        }
+        
+        else if (pg == 2) {
+            initLCD();
+            while (PORTBbits.RB1 == 0 && keys[(PORTB & 0xF0)>>4] != 'A') {
+                
+                message("Cat5:3   Cat6:1", "Cat7:1   Cat8:0");
+                
+            }
+            
+            while(PORTBbits.RB1 == 1){
+            // Wait until the key has been released
+            }
+            __lcd_clear();
+            pg = 3;
+        }
+        
+        else if (pg == 3) {
+            initLCD();
+            while (PORTBbits.RB1 == 0 && keys[(PORTB & 0xF0)>>4] != 'A') {
+                hours = time/3600;
+                min = (time%3600)/60;
+                sec = time%60;
+                __lcd_home();
+                printf("Time: %d:%d:%d", hours, min, sec);
+                __lcd_newline();
+                printf("End-A to go back");
+                
+            }
+            
+            while(PORTBbits.RB1 == 1){
+            // Wait until the key has been released
+            }
+            __lcd_clear();
+            pg = 0;
+        }
+    }
+
+
+    return;
+}
+
+void message(char line1[], char line2[]) {
+    __lcd_home();
+    printf(line1);
+    __lcd_newline();
+    printf(line2);
 }
 
 void update_time(unsigned char time[]) {
@@ -157,10 +236,36 @@ void delay(int seconds) {
     }
 }
 
-short int time_difference(unsigned char time1[], unsigned char time2[]) {
-    short int sec;
-    sec = 3600*((int)time1[2] - (int)time2[2]);
-    sec += 60*((int)time1[1] - (int)time2[1]);
-    sec += ((int)time1[0] - (int)time2[0]);
-    return sec;
+int time_difference(unsigned char time1[], unsigned char time2[]) {
+    int hr1, hr2, min1, min2, s1, s2;
+    char d1, d2, d3;
+    hr1 = time1[2]; hr2 = time2[2]; min1 = time1[1]; min2 = time2[1]; 
+    s1 = time1[0]; s2 = time2[0];
+    
+    d1 = dec_to_hex(hr1) - dec_to_hex(hr2);
+    d2 = dec_to_hex(min1) - dec_to_hex(min2);
+    d3 = dec_to_hex(s1) - dec_to_hex(s2);
+    
+    __lcd_clear();
+    __lcd_home();
+    initLCD();
+    return 3600*d1 + 60*d2 + d3;
 }
+
+int dec_to_hex(int num) {
+    int i = 0, quotient = num, temp, hexnum = 0;
+ 
+    
+    while (quotient != 0) {
+        temp = quotient % 16;
+        
+        hexnum += temp*pow(10, i);
+        
+        quotient = quotient / 16;
+        i += 1;
+    }
+    return hexnum;
+}
+
+
+
